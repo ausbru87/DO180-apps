@@ -1,0 +1,89 @@
+    8  cat /usr/local/etc/ocp4.config 
+    9  source /usr/local/etc/ocp4.config 
+   10  oc login -u ${RHT_OCP4_DEV_USER} -p ${RHT_OCP4_DEV_PASSWORD} ${RHT_OCP4_MASTER_API}
+   11  oc new-project ${RHT_OCP4_DEV_USER}-mysql-openshift
+   12  oc new-app --docker-image=registry.access.redhat.com/rhscl/mysql-57-rhel7:latest --name=mysql-openshift
+   13  oc new-app --docker-image=registry.access.redhat.com/rhscl/mysql-57-rhel7:latest --name=mysql-openshift -e MYSQL_USER=user1 -e MYSQL_PASSWORD=mypa55 -e MYSQL_DATABASE=testdb -e MYSQL_ROOT_PASSWORD=r00tpa55
+   14  oc status
+   15  oc get pods
+   16  oc get pos -o=wide
+   17  oc get pod -o=wide
+   18  oc get apps
+   19  oc status
+   20  oc delete all --selector app=mysql-openshift
+   21  oc status
+   22  oc new-app --docker-image=registry.access.redhat.com/rhscl/mysql-57-rhel7:latest --name=mysql-openshift -e MYSQL_USER=user1 -e MYSQL_PASSWORD=mypa55 -e MYSQL_DATABASE=testdb -e MYSQL_ROOT_PASSWORD=r00tpa55
+   23  oc get pods -o=wide
+   24  oc status
+   25  oc get pods
+   26  oc describe pod mysql-openshift-1-2cr6q
+   27  oc get svc
+   28  oc describe svc mysql-openshift
+   29  oc describe dc mysql-openshift
+   30  oc expose service mysql-openshift
+   31  oc get routes
+   32  oc get pods
+   33  oc port-forward mysql-openshift-1-2cr6q 3306:3306
+   34  oc delete project ${RHT_OCP4_DEV_USER}-mysql-openshift
+   36  oc status
+   37  oc expose service mysql-openshift
+   41  oc new-project
+   42  oc new-project lmabruhn-route
+   43  oc get projects
+   44  oc new-app http://github.com/yourgituser/DO180-apps/
+   45  oc new-app http://github.com/ausbru87/DO180-apps/
+   46  oc new-app http://github.com/ausbru87/DO180-apps/php-helloworld
+   47  oc new-app http://github.com/ausbru87/DO180-apps/php-helloworld/
+   48  oc new-app http://github.com/ausbru87/DO180-apps/php-helloworld.git
+   49  oc new-app https://github.com/ausbru87/DO180-apps/php-helloworld.git
+   50  oc new-app https://github.com/ausbru87/DO180-apps.git --context-dir=php-helloworld
+   52  oc get apps
+   53  oc delete --selector=php-helloworl
+   54  oc status
+   55  oc delete --selector=do180-apps
+   56  oc delete all --selector=do180-apps
+   57  oc delete -a --selector=do180-apps
+   58  oc get all --selector app=do180
+   59  oc get all --selector app=php-helloworld
+   60  oc get all
+   61  oc get svc do180
+   62  oc get svc do180-apps
+   63  oc get all --selector app=do180-apps
+   64  oc delete all --selector app=do180-apps
+   65  oc new-app php:7.1~https://github.com/ausbru87/DO180-apps --context-dir php-helloworld --name php-helloworld
+   66  oc get pods -w
+   67  oc logs -f bc/php-helloworld
+   68  oc logs -f dc/php-helloworld
+   69  oc describe svc/php-helloworld
+   70  oc expose svc/php-helloworld
+   71  oc describe route
+   74  oc delete route/php-helloworld
+   75  oc expose svc/php-helloworld --name=lmabruhn-xzy
+   91  source /usr/local/etc/ocp4.config 
+  109  vi Dockerfile.rhel7 
+  150  source /usr/local/etc/ocp4.config 
+  151  oc new-project lmabruhn-s2i
+  152  oc new-app php:7.1~https://github.com/ausbru87/DO180-apps.git#s2i --name=php-helloworld --context-dir php-helloworld
+  153  oc logs --all-containers -f php-helloworl-1-build
+  156  oc get pods
+  157  oc logs --all-containers -f php-helloworld-1-build
+  158  oc describe dc/php-helloworld
+  159  oc expose service php-helloworld --name lmabruhn-helloworld
+  160  oc get route -o jsonpath='{..spec.host}{"\n"}'
+  162  curl -s lmabruhn-helloworld-lmabruhn-s2i.apps.ocp-na2.prod.nextcle.com ${RHT_OCP4_WILDCARD_DOMAIN}
+  168  oc start-build php-helloworld
+  169  oc logs php-helloworld-2-build -f
+  170  oc get pods -w
+  172  curl -s lmabruhn-helloworld-lmabruhn-s2i.apps.ocp-na2.prod.nextcle.com ${RHT_OCP4_WILDCARD_DOMAIN}
+  175  source /usr/local/etc/ocp4.config 
+  176  oc new-project lmabruhn-ocp
+  177  oc new-app php:7.1~https://github.com/ausbru87/DO180-apps --name=temps --context-dir=temps
+  178  history | grep oc
+  179  oc logs -f bc/temps
+  180  oc get pods -w
+  181  oc get svc
+  182  oc describe svc/temps
+  183  oc expose service temps
+  184  oc get routes
+  187  history | grep oc
+  189  history | grep oc > oc-cli_ch6.txt
